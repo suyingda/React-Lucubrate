@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // const obj = {
+    //     head: {
+    //         data: 1,
+    //         next: {
+    //             data: 2,
+    //             next: {
+    //                 data: 3,
+    //                 next: null,
+    //             },
+    //         },
+    //     },
+    //     length: 3
+    // };
+    // function ListNode(val) {
+    //     this.val = val;
+    //     this.next = null;
+    // }
+    let ListNode = function (element) {
+        this.element = element;
+        this.next = null;
+    };
+
+    class LinkedList {
+        constructor() {
+            this.length = 0;
+            this.head = null;
+        }
+
+        //在链表中查找给定节点的索引
+        indexOf(element) {
+            let current = this.head;
+            let index = 1; // 记录元素的位置
+            while (current) { // 循环遍历链表
+                if (JSON.stringify(current.element) === JSON.stringify(element)) { // 如果当前节点的值等于元素的值
+                    return index; // 返回位置
+                } else { // 如果不等于，继续循环
+                    current = current.next;
+                    index++;
+                }
+            }
+            return -1; // 循环结束了，说明没找到
+        }
+
+        //返回链表中索引所对应的节点
+        find(position) {
+            // 越界判断，如果位置小于0或者大于链表长度，不能获取到元素
+            if (position <= 0 || position > this.length) return null;
+            let index = 1; // 记录当前位置
+            let current = this.head; // current指向头节点
+            // 循环结束，current指向该位置上的节点
+            while (index < position) {
+                current = current.next;
+                index++;
+            }
+            return current.element;
+        }
+
+        //向链表中添加节点
+        append(element) {
+            let node = new ListNode(element); // 创建新的节点
+            if (this.length === 0) { // 如果链表为空，则新节点就是头节点
+                this.head = node;
+            } else { // 如果链表不为空，新节点添加到链表尾部
+                let current = this.head; // 将current指向头节点
+                // 链表无法直接访问到最后的节点，只能通过一次次遍历来访问
+                while (current.next) { // 当达到最后一个节点时，循环结束
+                    // 当下一个节点存在时，就让current指针移动到下一个节点上
+                    current = current.next;
+                }
+                // 最后一个节点指向新节点
+                current.next = node;
+            }
+            this.length += 1; // 链表的长度+1
+        }
+
+        //在链表的指定位置插入节点
+        insert(position, element) {
+            // 对position进行越界判断，当该值小于0或者大于链表长度时，不能进行插入操作
+            if (position <= 0 || position > this.length) return false;
+            let node = new ListNode(element); // 创建新节点
+            if (position === 1) { // 如果节点要插入第一个位置
+                node.next = this.head; // 新节点指向原来的头节点
+                this.head = node; // 头节点修改为新节点
+            } else {
+                let previous = null; // 指向前一个位置
+                let current = this.head; // 指向下一个位置
+                let index = 1; // 记录循环的位置
+                // 循环结束，previous和current之间就是插入的节点
+                while (index < position) {
+                    previous = current;
+                    current = current.next;
+                    index++;
+                }
+                previous.next = node; // 在正确的位置插入元素
+                node.next = current;
+            }
+            this.length += 1; // 长度加1
+        }
+
+        //删除链表中指定位置的节点，并返回这个节点的值
+        removeAt(position) {
+            /**
+             * 删除某个位置上的节点分为两种情况：
+             *
+             * 删除第一个位置上的节点时，要将第一个位置上的节点指向null，并且第二个位置上的节点成为头节点
+             * 删除其他位置上的节点，循环找到该位置，同时记录该节点上一个节，将上一个节点指向该位置的下一个节点
+             * 删除某位置节点removeAt方法实现如下：
+             */
+            if (position <= 0 || position > this.length) return false; // 越界判断
+            let current = this.head;
+            if (position === 1) { // 如果删除第一个位置上的节点（头节点）
+                this.head = this.head.next;
+            } else { // 删除其他位置的节点
+                let index = 1; // 记录当前位置
+                let previous = null;
+                while (index < position) {
+                    previous = current;
+                    current = current.next;
+                    index++;
+                }
+                // 上一个节点指向当前元素的下一个节点
+                previous.next = current.next;
+            }
+            this.length--;
+            return current; // 返回被删除的节点
+        }
+
+        //删除链表中对应的节点
+        remove(element) {
+
+        }
+
+        //更新链表中对应的位置元素
+        update(position, element) {
+            // 越界判断
+            if (position <= 0 || position > this.length) return false;
+            let current = this.head;
+            let index = 1;
+            while (index < position) {
+                current = current.next;
+                index++;
+            }
+            current.element = element; // 修改数据
+            return true;
+        }
+
+        //判断链表是否为空
+        isEmpty() {
+            return !this.length
+        }
+
+        //返回链表的长度
+        size() {
+            return this.length
+        }
+
+        //返回链表的头节点
+        getHead() {
+            return this.head
+        }
+
+        //清空链表
+        clear() {
+            this.head = null
+            this.length = 0
+        }
+
+        //辅助方法，遍历整个链表，按指定格式输出链表中的所有节点，方便测试验证结果
+        toString() {
+        }
+
+    }
+
+    const link = new LinkedList();
+    link.append({
+        'attr': 1
+    })
+    link.append({
+        'attr': 2
+    })
+    link.append({
+        'attr': 3
+    })
+    console.log(link)
+    console.log(link.find(1))
+    console.log(link.indexOf({
+        'attr': 3
+    }))
+    // link.update(3, {'attr': '2-1'})
+    // console.log('删除指定位置节点并且返回', link.removeAt(3))
+    // link.clear();
+    console.log(link)
+    console.log(link.isEmpty())
+
+</script>
+</body>
+</html>

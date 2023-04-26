@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // 一个人爬楼梯，每次只能爬 1 个或 2 个台阶，假设有 n 个台阶，那么这个人有多少种不同的爬楼梯方法？
+    // 思路：
+    // 由于第 n 级台阶一定是从 n - 1 级台阶或者 n - 2 级台阶来的，因此到第 n 级台阶的数目就是 到第 n - 1 级台阶的数目加上到第 n - 2 级台阶的数目。
+
+
+    const n = 10;
+
+    function climbStairs(n) {
+        if (n === 1) return 1;
+        if (n === 2) return 2;
+        return climbStairs(n - 1) + climbStairs(n - 2);
+    }
+
+    console.log(climbStairs(n))
+
+
+    const n2 = 1009;
+    const memo = {}
+
+    function climbStairs2(n) {
+        if (n === 1) return 1;
+        if (n === 2) return 2;
+        if (memo[n]) return memo[n]
+        const ans = climbStairs2(n - 1) + climbStairs2(n - 2)
+        memo[n] = ans
+        return ans
+    }
+
+    console.log(climbStairs2(n2))
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    @keyframes move {
+        from {
+            left: 0;
+        }
+
+        to {
+            left: 100%;
+        }
+    }
+
+    .move {
+        position: absolute;
+        animation: move 5s linear infinite;
+    }
+</style>
+
+<body>
+<div class="move">LHX-FLY</div>
+</body>
+<script>
+    function longFun() {
+        let i = 0
+        const start = performance.now()
+        // 5秒内不停执行 i++ 操作，实现长任务效果
+        while (performance.now() - start <= 500) {
+            i++
+        }
+        return i
+    }
+    // 1秒后才执行js长任务
+    setTimeout(() => {
+        longFun()
+    }, 1000)
+
+</script>
